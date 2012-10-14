@@ -6,7 +6,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'parkero.views.home', name='home'),
+    url(r'^$', 'website.views.inicio'),
+    url(r'^ahora$', 'website.views.ahora'),
     # url(r'^parkero/', include('parkero.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
