@@ -1,4 +1,4 @@
 parkero
 =======
 
-aplicacion web movil para hallar estacionamientos
+Aplicación web móvil para hallar estacionamientos
