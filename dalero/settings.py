@@ -1,4 +1,4 @@
-# Django settings for parkero project.
+# Django settings for dalero project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -78,7 +78,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'kp#iwz&amp;j-kw6xc)kxpp0&amp;w+a-#4r#!crilw%@+f)rz-36($_w-'
+SECRET_KEY = 'w&amp;0hk4q0=op_h!l)_o1@erbr^dyqf(%(dgut^)gl#)7qa#g4ad'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -97,12 +97,12 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'parkero.urls'
+ROOT_URLCONF = 'dalero.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'parkero.wsgi.application'
+WSGI_APPLICATION = 'dalero.wsgi.application'
 
-TEMPLATE_DIRS = ('D:/parkero/parkero/templates',)
+TEMPLATE_DIRS = ('D:/dalero/templates',)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -115,7 +115,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'administrador',
+    'website',
 )
 
 # A sample logging configuration. The only tangible logging
