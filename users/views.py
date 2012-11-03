@@ -35,8 +35,6 @@ def twitter_callback(request):
         Una vez el usuario permise o no el acceso a su cuenta de Twitter esta vista revisa si concedio permisos o no
         En caso afirmativo busca a un usuario con ese id de Twitter para crear la sesion, de no existir crea al usuario
     """
-    if "denied" in request.GET:
-        return HttpResponse("access denied")
     retorno = HttpResponseRedirect('/')
     if 'tw_rt' in request.COOKIES:
         s = request.COOKIES["tw_rt"]

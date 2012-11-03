@@ -26,10 +26,11 @@ def home(request):
         data['suser'] = to_dict
     elif 'fb' in request.COOKIES:
         data['suser'] = json.load(urllib.urlopen("https://graph.facebook.com/me?%s"%urllib.urlencode(dict(access_token=request.COOKIES['fb']))))
-    try:
-        send_mail('Prueba', json.dumps(data['suser']), 'enydrueda@gmail.com', 'enydrueda@gmail.com')
-    except:
-        pass
+    if "suser" in data:
+        try:
+            send_mail('Prueba', json.dumps(data['suser']), 'enydrueda@gmail.com', ['enydrueda@gmail.com'])
+        except:
+            pass
 
     retorno = render_to_response("index.html", data, context_instance=RequestContext(request))
     retorno.delete_cookie('tw')

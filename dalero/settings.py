@@ -12,7 +12,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'dalero_db',                      # Or path to database file if using sqlite3.
@@ -21,7 +21,7 @@ MANAGERS = ADMINS
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-}'''
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -59,7 +59,7 @@ MEDIA_URL = "/media/"
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-MEDIA_ROOT = os.path.join(ROOT_PATH, '../static/')
+STATIC_ROOT = os.path.join(ROOT_PATH, '../static/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
