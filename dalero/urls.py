@@ -1,16 +1,17 @@
-from django.conf.global_settings import STATIC_ROOT
 from django.conf.urls import patterns, include, url
+from dalero import settings
 
 # Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
-from dalero import settings
 
 #admin.autodiscover()
+from dalero.settings import STATIC_ROOT
 
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'website.views.home', name='home'),
     url(r'^users/', include('users.urls')),
+    url(r'^app/', include('website.app_urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^facebook_connect/$','users.views.facebook_connect'),
     url(r'^facebook_callback/$','users.views.facebook_callback'),
 
+    url(r'^list_parkings/$','users.views.list_points'),
 )

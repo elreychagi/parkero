@@ -31,7 +31,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-la'
 
 SITE_ID = 1
 
@@ -81,7 +81,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'w&amp;0hk4q0=op_h!l)_o1@erbrdfd^dyqf(%(dgut^)gl#)7qa#g4ad'
+SECRET_KEY = 'w&amp;0hk4q0=op_h!l)_o1@efd^dyqf(%(dgut^)gl#)7qa#g4ad'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -105,21 +105,18 @@ ROOT_URLCONF = 'dalero.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'dalero.wsgi.application'
 
-TEMPLATE_DIRS = ('templates',)
+TEMPLATE_DIRS = (os.path.join(ROOT_PATH, '../templates/'),)
+
+LOGIN_URL = '/login/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'website',
-    'south',
+    'users',
+    'geo',
+    'comments'
 )
 TWITTER = {'KEY' : 'QtDrXHh2rKOzAdbtt9WGIg',
            'SECRET' : 'mIJlwd8UlUCD2jIMBr00mEaNVJc6Xfwg2qfOeKLP6A',
