@@ -164,16 +164,16 @@ def new_parking(request):
                                 longitude=clean_data['longitude'])
                 parking.save()
 
-            '''msg = MIMEText(u"Bienvenido a Dalero.net su contraseña de ingreso es %s"%password,'html')
+            msg = MIMEText(u"Bienvenido a Dalero.net su contraseña de ingreso es %s"%password,'html')
             msg["From"] = "enydrueda@gmail.com"
             msg["To"] = user.email
             msg["Subject"] = "Bienvenido a Dalero.net"
             p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-            p.communicate(msg)'''
+            p.communicate(msg)
             return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
         else:
             errors = form.errors
-    return render_to_response('admin_parkings.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
+    return render_to_response('admin/admin_parkings.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
 
 @user_passes_test(admin_user, login_url='/users/login/')
 def list_parkings(request, page=1):
@@ -202,7 +202,7 @@ def list_parkings(request, page=1):
                           'num_pages': parkings.paginator.num_pages,
     }
     
-    return render_to_response('list_parkings.html', {'pagination' : pagination,}, context_instance=RequestContext(request))
+    return render_to_response('admin/list_parkings.html', {'pagination' : pagination,}, context_instance=RequestContext(request))
 
 @user_passes_test(admin_user, login_url='/users/login/')
 def edit_parking(request, id):
@@ -236,7 +236,7 @@ def edit_parking(request, id):
                     parking.save()
             else:
                 errors = form.errors
-        return render_to_response('admin_parkings.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
+        return render_to_response('admin/admin_parkings.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
     except Parking.DoesNotExist:
         raise Http404()
 
@@ -254,7 +254,7 @@ def delete_parking(request, id):
 def list_comments(request, park, page=1):
     try:
         parking = Parking.objects.get(pk=park, user__is_active=True)
-        comments = [x.to_dict(admin=True) for x in Comment.objects.all().filter(parking__id=parking.id)]
+        comments = [x.to_dict(admin=True) for x in Comment.objects.all().filter(parking__id=parking.id, userprofile__user__is_active=True)]
 
         paginator = Paginator(comments, 20)
 
@@ -279,19 +279,64 @@ def list_comments(request, park, page=1):
                       'num_pages': parkings.paginator.num_pages,
                       }
 
-        return render_to_response('list_comments.html', {'pagination' : pagination, 'parking' : park}, context_instance=RequestContext(request))
+        return render_to_response('admin/list_comments.html', {'pagination' : pagination, 'parking' : park}, context_instance=RequestContext(request))
     except Parking.DoesNotExist:
         raise Http404()
 
 @user_passes_test(admin_user, login_url='/users/login/')
-def delete_comments(request, id):
+def delete_comments(request, parking, id):
     try:
-        parking = Parking.objects.get(pk=id)
-        parking.user.is_active = not parking.user.is_active
-        parking.user.save()
-        return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
+        comment = Comment.objects.get(pk=id)
+        comment.delete()
     except Parking.DoesNotExist:
         raise Http404()
+    except:
+        pass
+    return HttpResponseRedirect('/users/admin/listar_comentarios/%s/'%parking)
+
+@user_passes_test(admin_user, login_url='/users/login/')
+def list_users(request, page=1):
+    try:
+        users = [x.to_dict() for x in UserProfile.objects.all()]
+
+        paginator = Paginator(users, 20)
+
+        try:
+            page = int(page)
+        except:
+            page = 1
+
+        try:
+            parkings = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+            parkings = paginator.page(paginator.num_pages)
+
+        next_page = parkings.next_page_number() if parkings.has_next() else 0
+
+        pagination = {'object_list': parkings.object_list,
+                      'has_prev': parkings.has_previous(),
+                      'has_next': parkings.has_next(),
+                      'prev_page': parkings.previous_page_number() if parkings.has_previous() else None,
+                      'next_page': next_page if parkings.has_next() else None,
+                      'page': parkings.number,
+                      'num_pages': parkings.paginator.num_pages,
+                      }
+
+        return render_to_response('admin/list_users.html', {'pagination' : pagination}, context_instance=RequestContext(request))
+    except UserProfile.DoesNotExist:
+        raise Http404()
+
+@user_passes_test(admin_user, login_url='/users/login/')
+def delete_user(request, id):
+    try:
+        user = UserProfile.objects.get(pk=id)
+        user.user.is_active = not user.user.is_active
+        user.user.save()
+    except Parking.DoesNotExist:
+        raise Http404()
+    except:
+        pass
+    return HttpResponseRedirect('/users/admin/listar_usuarios/')
 
 def new_password():
     """

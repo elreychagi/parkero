@@ -1,4 +1,4 @@
-{% extends 'base_admin.html' %}
+{% extends 'admin/base_admin.html' %}
 
 {% block content %}
 
@@ -16,11 +16,11 @@
         {% for comm in pagination.object_list %}
             <tr>
                 <td><a href="/users/admin/editar_estacionamiento/{{ parking }}">{{ comm.parking.nombre }}</a></td>
-                <td><a href="/users/admin/ver_usuario/{{ parking }}">{{ comm.userprofile.username }}</a></td>
+                <td>{{ comm.userprofile.username }}</td>
                 <td>{{ comm.date }}</td>
                 <td>{{ comm.content }}</td>
                 <td>
-                    <a href="/users/admin/eliminar_comentario/{{ comm.id }}/">borrar</a>
+                    <a href="/users/admin/eliminar_comentario/{{ parking }}/{{ comm.id }}/">borrar</a>
                 </td>
             </tr>
         {% endfor %}

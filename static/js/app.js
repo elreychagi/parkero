@@ -1,6 +1,14 @@
 $(document).ready(function(){
     var $lat = false;
     var $long = false;
+
+    var useragent = navigator.userAgent;
+    if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+        $('#map_canvas').css({'width':'100%', 'height':'100%'});
+    } else {
+        $('#map_canvas').css({'width':'600px', 'height':'800px'});
+    }
+
     navigator.geolocation.getCurrentPosition(function (position) {
         $lat = position.coords.latitude;
         $long = position.coords.longitude;
@@ -32,8 +40,10 @@ $(document).ready(function(){
                 });
             }
         );
-        alert(position.coords.accuracy);
-    }, function(){alert('error');}, { enableHighAccuracy:true });
+    },
+        function(){alert('error');},
+        { enableHighAccuracy:true }
+    );
 });
 
 

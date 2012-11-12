@@ -17,6 +17,8 @@ class UserProfile(models.Model):
     def to_dict(self):
         data = {'username' : self.user.username,
                 'facebook' : self.facebook_id is not None,
+                'id' : self.id,
+                'active' : self.user.is_active,
                 'twitter' : self.twitter_id is not None}
         return data
 
