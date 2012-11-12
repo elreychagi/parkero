@@ -159,17 +159,20 @@ def new_parking(request):
 
                 parking = Parking(user=user,
                                 description=clean_data['description'],
-                                nombre=clean_data['nombre'],
+                                name=clean_data['name'],
                                 latitude=clean_data['latitude'],
-                                longitude=clean_data['longitude'])
+                                longitude=clean_data['longitude'],
+                                motorbikes=clean_data['motorbikes'],
+                                truks=clean_data['truks'],
+                                open=clean_data['open'])
                 parking.save()
 
-            msg = MIMEText(u"Bienvenido a Dalero.net su contraseña de ingreso es %s"%password,'html')
-            msg["From"] = "enydrueda@gmail.com"
-            msg["To"] = user.email
-            msg["Subject"] = "Bienvenido a Dalero.net"
-            p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-            p.communicate(msg)
+                msg = MIMEText(u"Bienvenido a Dalero.net su contrase&nacute;a de ingreso es %s"%password,'html')
+                msg["From"] = "enydrueda@gmail.com"
+                msg["To"] = user.email
+                msg["Subject"] = "Bienvenido a Dalero.net"
+                p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                p.communicate(msg.as_string())
             return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
         else:
             errors = form.errors
@@ -210,12 +213,15 @@ def edit_parking(request, id):
     try:
         parking = Parking.objects.get(pk=id)
         if request.method != 'POST':
-            form = FormParking(initial={'nombre' : parking.nombre,
+            form = FormParking(initial={'name' : parking.name,
                                         'username' : parking.user.username,
                                         'email' : parking.user.email,
                                         'description' : parking.description,
                                         'latitude' : parking.latitude,
                                         'longitude' : parking.longitude,
+                                        'motorbikes' : parking.motorbikes,
+                                        'truks' : parking.truks,
+                                        'open' : parking.open,
                                         'parking' : parking.id},
                                         edit=True)
         else:
@@ -230,9 +236,12 @@ def edit_parking(request, id):
                     user.save()
 
                     parking.description = clean_data['description']
-                    parking.nombre = clean_data['nombre']
+                    parking.name = clean_data['name']
                     parking.latitude = clean_data['latitude']
                     parking.longitude = clean_data['longitude']
+                    parking.motorbikes = clean_data['motorbikes']
+                    parking.truks = clean_data['truks']
+                    parking.open = clean_data['open']
                     parking.save()
             else:
                 errors = form.errors

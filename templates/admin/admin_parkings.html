@@ -20,11 +20,11 @@
                 {% if errors.email %}<span class="help-inline">{{ errors.email.as_text }}</span>{% endif %}
             </div>
         </div>
-        <div class="control-group{% if errors.nombre %} error{% endif %}" id="control_{{ form.nombre.name }}">
-            <label class="control-label" for="{{ form.nombre.name }}">{{ form.nombre.label }}</label>
+        <div class="control-group{% if errors.name %} error{% endif %}" id="control_{{ form.name.name }}">
+            <label class="control-label" for="{{ form.name.name }}">{{ form.name.label }}</label>
             <div class="controls">
-                {{ form.nombre }}
-                {% if errors.nombre %}<span class="help-inline">{{ errors.nombre.as_text }}</span>{% endif %}
+                {{ form.name }}
+                {% if errors.name %}<span class="help-inline">{{ errors.name.as_text }}</span>{% endif %}
             </div>
         </div>
         <div class="control-group{% if errors.description %} error{% endif %}" id="control_{{ form.description.name }}">
@@ -46,6 +46,27 @@
             <div class="controls">
                 {{ form.longitude }}
                 {% if errors.longitude %}<span class="help-inline">{{ errors.longitude.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.motorbikes %} error{% endif %}" id="control_{{ form.motorbikes.name }}">
+            <label class="control-label" for="{{ form.motorbikes.name }}">{{ form.motorbikes.label }}</label>
+            <div class="controls">
+                {{ form.motorbikes }}
+                {% if errors.motorbikes %}<span class="help-inline">{{ errors.motorbikes.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.truks %} error{% endif %}" id="control_{{ form.truks.name }}">
+            <label class="control-label" for="{{ form.truks.name }}">{{ form.truks.label }}</label>
+            <div class="controls">
+                {{ form.truks }}
+                {% if errors.truks %}<span class="help-inline">{{ errors.truks.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.open %} error{% endif %}" id="control_{{ form.open.name }}">
+            <label class="control-label" for="{{ form.open.name }}">{{ form.open.label }}</label>
+            <div class="controls">
+                {{ form.open }}
+                {% if errors.open %}<span class="help-inline">{{ errors.open.as_text }}</span>{% endif %}
             </div>
         </div>
         {{ form.parking }}

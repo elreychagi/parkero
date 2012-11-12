@@ -10,6 +10,9 @@
                 <th>Descripción</th>
                 <th>Latitud</th>
                 <th>Longitud</th>
+                <th>Motos</th>
+                <th>Camiones</th>
+                <th>Sin techo</th>
                 <th>Comentarios</th>
                 <th>Puntos</th>
                 <th>Acciones</th>
@@ -18,11 +21,14 @@
         <tbody>
         {% for park in pagination.object_list %}
             <tr>
-                <td>{{ park.nombre }}</td>
+                <td>{{ park.name }}</td>
                 <td>{{ park.email }}</td>
                 <td>{{ park.description }}</td>
                 <td>{{ park.latitude }}</td>
                 <td>{{ park.longitude }}</td>
+                <td>{% if park.motorbikes %}X{% endif %}</td>
+                <td>{% if park.truks %}X{% endif %}</td>
+                <td>{% if park.open %}X{% endif %}</td>{{ park.open }}
                 <td><a href="/users/admin/listar_comentarios/{{ park.id }}/">{{ park.comments }}</a></td>
                 <td>{{ park.points }}</td>
                 <td>

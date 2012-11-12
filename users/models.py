@@ -24,20 +24,26 @@ class UserProfile(models.Model):
 
 class Parking(models.Model):
     user = models.OneToOneField(User)
-    nombre = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     description = models.TextField(max_length=200)
     latitude = models.FloatField(db_index=True, max_length=25)
     longitude = models.FloatField(db_index=True, max_length=25)
     date = models.DateTimeField(auto_now_add=True)
+    motorbikes = models.BooleanField(default=False)
+    truks = models.BooleanField(default=False)
+    open = models.BooleanField(default=False)
 
     def to_dict(self, admin=False):
         points = self.points_set.all().aggregate(Avg('points'))['points__avg']
         data = {
-            'nombre' : self.nombre,
+            'name' : self.name,
             'description' : self.description,
             'latitude' : str(self.latitude),
             'longitude' : str(self.longitude),
             'points' : '%s de 10'%(int(round(points, 2)) if points is not None else 0.0),
+            'motorbikes' : self.motorbikes,
+            'truks' : self.truks,
+            'open' : self.open,
             'comments' : self.comment_set.all().count()
         }
 

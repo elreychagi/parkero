@@ -7,7 +7,7 @@ class FormParking(forms.Form):
         max_length=30,
         widget=forms.TextInput(attrs={'placeholder':'No se permiten espacios'}))
 
-    nombre = forms.CharField(label='Nombre del estacionamiento',
+    name = forms.CharField(label='Nombre del estacionamiento',
         max_length=100,
         widget=forms.TextInput())
 
@@ -28,6 +28,18 @@ class FormParking(forms.Form):
         max_digits= 17,
         decimal_places=15,
         widget= forms.TextInput(attrs={'placeholder':'12.123456789012345'}))
+
+    motorbikes = forms.BooleanField(label='Aceptan motos',
+        required= False,
+        widget= forms.CheckboxInput())
+
+    truks = forms.BooleanField(label='Aceptan camiones',
+        required= False,
+        widget= forms.CheckboxInput())
+
+    open = forms.BooleanField(label='Sin techo',
+        required= False,
+        widget= forms.CheckboxInput())
 
     parking = forms.IntegerField(required=True, widget=forms.HiddenInput())
 

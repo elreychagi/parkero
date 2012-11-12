@@ -15,7 +15,7 @@
         <tbody>
         {% for comm in pagination.object_list %}
             <tr>
-                <td><a href="/users/admin/editar_estacionamiento/{{ parking }}">{{ comm.parking.nombre }}</a></td>
+                <td><a href="/users/admin/editar_estacionamiento/{{ parking }}">{{ comm.parking.name }}</a></td>
                 <td>{{ comm.userprofile.username }}</td>
                 <td>{{ comm.date }}</td>
                 <td>{{ comm.content }}</td>
