@@ -8,7 +8,7 @@ from django.utils.decorators import available_attrs
 from dalero import settings
 
 def social_user(user):
-    return user.is_authenticated() and (user.userprofile.facebook_id != None or user.userprofile.twitter_id != None)
+    return user.is_authenticated() and (hasattr(user, 'userprofile'))
 
 def admin_user(user):
     return user.is_authenticated() and user.is_superuser
