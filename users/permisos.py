@@ -10,6 +10,15 @@ from dalero import settings
 def social_user(user):
     return user.is_authenticated() and (user.userprofile.facebook_id != None or user.userprofile.twitter_id != None)
 
+def admin_user(user):
+    return user.is_authenticated() and user.is_superuser
+
+def parking_user(user):
+    return user.is_authenticated() and (user.parking.count())
+
+def no_user(user):
+    return not user.is_authenticated()
+
 def user_passes_test(test_func, login_url=None, login_json=False, redirect_field_name=REDIRECT_FIELD_NAME):
 
     def decorator(view_func):

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^$', 'website.views.home', name='home'),
     url(r'^users/', include('users.urls')),
     url(r'^app/', include('website.app_urls')),
+    url(r'^geo/', include('geo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

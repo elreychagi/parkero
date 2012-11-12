@@ -1,0 +1,40 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Descripción</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
+                <th>Comentarios</th>
+                <th>Puntos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for park in pagination.object_list %}
+            <tr>
+                <td>{{ park.nombre }}</td>
+                <td>{{ park.email }}</td>
+                <td>{{ park.description }}</td>
+                <td>{{ park.latitude }}</td>
+                <td>{{ park.longitude }}</td>
+                <td><a href="/users/admin/listar_comentarios/{{ park.id }}/">{{ park.comments }}</a></td>
+                <td>{{ park.points }}</td>
+                <td>
+                    <a href="/users/admin/editar_estacionamiento/{{ park.id }}/">editar</a>
+                    <a href="/users/admin/eliminar_estacionamiento/{{ park.id }}/">{% if park.active %}desactivar{% else %}activar{% endif %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <ul class="pager">
+        {% if pagination.has_prev %}<li><a href="/users/admin/listar_estacionamientos/{{ pagination.prev_page }}/">Anterior</a></li>{% endif %}
+        {% if pagintion.has_next %}<li><a href="/users/admin/listar_estacionamientos/{{ pagination.next_page }}/">Próxima</a></li>{% endif %}
+    </ul>
+{% endblock %}
