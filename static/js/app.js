@@ -35,7 +35,7 @@ $(document).ready(function(){
                         position: new google.maps.LatLng(v.latitude, v.longitude),
                         map: map,
                         icon: new google.maps.MarkerImage("/static/img/taxi.png"),
-                        title: 'Hello World!'
+                        title:v.nombre
                     });
                 });
             }

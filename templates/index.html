@@ -39,9 +39,10 @@
             </a>
             <a class="brand" href="#">Dalero</a>
             <ul class="nav">
-                <li><a href="/users/login/">Login</a></li>
+                {% if not user.is_authenticated %}<li><a href="/users/login/">Login</a></li>{% endif %}
                 {% if user.is_authenticated and user.userprofile %}<li><a href="/app/">Ver mapa</a></li>{% endif %}
                 {% if user.is_authenticated and user.is_superuser %}<li><a href="/users/admin/listar_estacionamientos/">Administración</a></li>{% endif %}
+                {% if user.is_authenticated %}<li><a href="/users/logout/">Salir</a></li>{% endif %}
             </ul>
 
         </div>

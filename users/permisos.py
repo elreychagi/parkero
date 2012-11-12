@@ -8,13 +8,13 @@ from django.utils.decorators import available_attrs
 from dalero import settings
 
 def social_user(user):
-    return user.is_authenticated() and (hasattr(user, 'userprofile'))
+    return user.is_authenticated() and (hasattr(user, 'userprofile') or user.is_superuser)
 
 def admin_user(user):
     return user.is_authenticated() and user.is_superuser
 
 def parking_user(user):
-    return user.is_authenticated() and (user.parking.count())
+    return user.is_authenticated() and (hasattr(user, 'parking') or user.is_superuser)
 
 def no_user(user):
     return not user.is_authenticated()
