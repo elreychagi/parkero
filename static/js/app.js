@@ -3,10 +3,9 @@ $(document).ready(function(){
     var $long = false;
 
     var useragent = navigator.userAgent;
-    if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
-        $('#map_canvas').css({'width':'100%', 'height':'100%'});
-    } else {
-        $('#map_canvas').css({'width':'600px', 'height':'800px'});
+
+    if (useragent.indexOf('iPhone') == -1 && useragent.indexOf('Android') == -1 ) {
+        $('#map_canvasd').css({'width':'600px'});
     }
 
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -16,6 +15,9 @@ $(document).ready(function(){
         var mapOptions = {
             center: point,
             zoom: 16,
+            styles:[
+                { featureType: "road", stylers: [{hue: "#006Eee"}]}
+            ],
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
