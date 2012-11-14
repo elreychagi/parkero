@@ -18,10 +18,12 @@ from users.forms import FormParking
 from users.models import UserProfile, Parking
 from users.permisos import *
 
+# VISTAS PARA LOGUEO CON FACEBOOK Y TWITTER
 def twitter_connect(request):
     """
         Inicio del proceso oauth de Twitter
         Se obtiene el request_token para luego redireccionar al usuario a la página para solicitar permiso de acceso
+        Libreria tweepy
     """
 
     try:
@@ -48,7 +50,7 @@ def twitter_callback(request):
         s = request.get_signed_cookie("tw_rt", salt=SECRET_KEY)
         tokens = s.split('::')
         request_token = tokens[0]
-        request_secret = tokens[0]
+        request_secret = tokens[1]
         if 'oauth_token' in request.GET and 'oauth_verifier' in request.GET:
             oauth_token = request.GET['oauth_token']
             oauth_verifier = request.GET['oauth_verifier']
@@ -136,6 +138,7 @@ def facebook_callback(request):
         pass
     return retorno
 
+# VISTAS DE USUARIO ESTACIONAMIENTO
 @user_passes_test(admin_user, login_url='/users/login/')
 def new_parking(request):
     errors = {}
@@ -347,6 +350,80 @@ def delete_user(request, id):
         pass
     return HttpResponseRedirect('/users/admin/listar_usuarios/')
 
+# VISTAS DE USURIO STACIONAMIENTO
+@user_passes_test(parking_user, login_url='/users/login/')
+def parking_edit_parking(request):
+    errors = {}
+    try:
+        parking = request.user.parking
+        if request.method != 'POST':
+            form = FormParking(initial={'name' : parking.name,
+                                        'email' : parking.user.email,
+                                        'description' : parking.description,
+                                        'motorbikes' : parking.motorbikes,
+                                        'truks' : parking.truks,
+                                        'open' : parking.open,
+                                        'parking' : parking.id},
+                            edit=True, parking=True)
+        else:
+            form = FormParking(data=request.POST, edit=True)
+            if form.is_valid():
+                clean_data = form.cleaned_data
+                if User.objects.all().exclude(pk=parking.user.pk).filter(email=clean_data['email']).count() > 0:
+                    errors = {'email' : {'as_text':'* Correo electrónico usado'}}
+                else:
+                    user = parking.user
+                    user.email = clean_data['email']
+                    user.save()
+
+                    parking.description = clean_data['description']
+                    parking.name = clean_data['name']
+                    parking.latitude = clean_data['latitude']
+                    parking.longitude = clean_data['longitude']
+                    parking.motorbikes = clean_data['motorbikes']
+                    parking.truks = clean_data['truks']
+                    parking.open = clean_data['open']
+                    parking.save()
+            else:
+                errors = form.errors
+        return render_to_response('admin/admin_parkings.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
+    except Parking.DoesNotExist:
+        raise Http404()
+
+@user_passes_test(parking_user, login_url='/users/login/')
+def parking_list_comments(request, park, page=1):
+    try:
+        parking = Parking.objects.get(pk=park, user__is_active=True)
+        comments = [x.to_dict(admin=True) for x in Comment.objects.all().filter(parking__id=parking.id, userprofile__user__is_active=True)]
+
+        paginator = Paginator(comments, 20)
+
+        try:
+            page = int(page)
+        except:
+            page = 1
+
+        try:
+            parkings = paginator.page(page)
+        except (EmptyPage, InvalidPage):
+            parkings = paginator.page(paginator.num_pages)
+
+        next_page = parkings.next_page_number() if parkings.has_next() else 0
+
+        pagination = {'object_list': parkings.object_list,
+                      'has_prev': parkings.has_previous(),
+                      'has_next': parkings.has_next(),
+                      'prev_page': parkings.previous_page_number() if parkings.has_previous() else None,
+                      'next_page': next_page if parkings.has_next() else None,
+                      'page': parkings.number,
+                      'num_pages': parkings.paginator.num_pages,
+                      }
+
+        return render_to_response('admin/list_comments.html', {'pagination' : pagination, 'parking' : park}, context_instance=RequestContext(request))
+    except Parking.DoesNotExist:
+        raise Http404()
+
+# VISTAS PARA LOGUEO Y LOGIN
 def new_password():
     """
         Generador de passwords

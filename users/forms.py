@@ -43,9 +43,12 @@ class FormParking(forms.Form):
 
     parking = forms.IntegerField(required=True, widget=forms.HiddenInput())
 
-    def __init__(self, edit=False, *args, **kwargs):
+    def __init__(self, edit=False, parking=False, *args, **kwargs):
         super(FormParking, self).__init__(*args, **kwargs)
         if not edit:
             del self.fields['parking']
         else:
             self.fields['username'].widget = forms.TextInput(attrs={'readonly':'true'})
+            if parking:
+                del self.fields['latitude']
+                del self.fields['longitude']

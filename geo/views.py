@@ -13,8 +13,9 @@ def list_points(request):
 
     cursor = connection.cursor()
 
-    sql = """SELECT id, latitude, longitude FROM users_parking WHERE (%f * acos( cos( radians(%f) ) * cos( radians( latitude ) ) *
-        cos( radians( longitude ) - radians(%f) ) + sin( radians(%f) ) * sin( radians( latitude ) ) ) ) < %d
+    sql = """SELECT id, latitude, longitude
+             FROM users_parking WHERE (%f * acos( cos( radians(%f) ) * cos( radians( latitude ) ) *
+             cos( radians( longitude ) - radians(%f) ) + sin( radians(%f) ) * sin( radians( latitude ) ) ) ) < %d
         """ % (distance_unit, lat, long, lat, int(radius))
     cursor.execute(sql)
     ids = [row[0] for row in cursor.fetchall()]
