@@ -102,7 +102,7 @@ def facebook_callback(request):
     """
     code = None if 'code' not in request.GET else request.GET['code']
     retorno = HttpResponseRedirect('/?error_facebook')
-    try:
+    if 0==0:
         if code is not None:
             args = dict(client_id=FACEBOOK["KEY"],
                         redirect_uri=FACEBOOK["CALLBACK"],
@@ -134,8 +134,8 @@ def facebook_callback(request):
                         user.backend = 'django.contrib.auth.backends.ModelBackend'
                         auth.login(request, user)
                     retorno = HttpResponseRedirect('/app/')
-    except:
-        pass
+    """except:
+        pass"""
     return retorno
 
 # VISTAS DE USUARIO ESTACIONAMIENTO
@@ -441,21 +441,21 @@ def login(request):
     if request.method == 'POST':
         if 'username' not in request.POST or 'password' != request.POST:
             errors = 'Debe llenar todos los campos'
-
-        user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
-
-        if user is None or not user.is_active or hasattr(user, 'userprofile'):
-            errors = u'Nombre de usuario o contraseña no coinciden'
         else:
-            auth.login(request, user)
+            user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
 
-            if 'next' in request.GET:
-                return HttpResponseRedirect(request.GET['next'])
+            if user is None or not user.is_active or hasattr(user, 'userprofile'):
+                errors = u'Nombre de usuario o contraseña no coinciden'
             else:
-                if hasattr(user, 'parking'):
-                    return HttpResponseRedirect('/users/parking/')
-                if user.is_superuser:
-                    return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
+                auth.login(request, user)
+
+                if 'next' in request.GET:
+                    return HttpResponseRedirect(request.GET['next'])
+                else:
+                    if hasattr(user, 'parking'):
+                        return HttpResponseRedirect('/users/parking/')
+                    if user.is_superuser:
+                        return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
 
 
     return render_to_response('login.html', {'errors' : errors}, context_instance=RequestContext(request))
