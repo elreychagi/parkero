@@ -174,8 +174,8 @@ def new_parking(request):
                 msg["From"] = "enydrueda@gmail.com"
                 msg["To"] = user.email
                 msg["Subject"] = "Bienvenido a Dalero.net"
-                p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-                p.communicate(msg.as_string())
+                """p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
+                p.communicate(msg.as_string())"""
             return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
         else:
             errors = form.errors
@@ -439,7 +439,7 @@ def new_password():
 def login(request):
     errors = None
     if request.method == 'POST':
-        if 'username' not in request.POST or 'password' != request.POST:
+        if 'username' not in request.POST or 'password' not in request.POST:
             errors = 'Debe llenar todos los campos'
         else:
             user = auth.authenticate(username = request.POST['username'], password = request.POST['password'])
@@ -456,7 +456,6 @@ def login(request):
                         return HttpResponseRedirect('/users/parking/')
                     if user.is_superuser:
                         return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
-
 
     return render_to_response('login.html', {'errors' : errors}, context_instance=RequestContext(request))
 

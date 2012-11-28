@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from users.models import UserProfile
+from users.models import Cliente
 
-class UserPosition(models.Model):
-    user = models.ForeignKey(UserProfile)
-    latitude = models.FloatField(db_index=True, max_length=25)
-    longitude = models.FloatField(db_index=True, max_length=25)
-    date = models.DateTimeField(auto_now_add=True)
-    first = models.BooleanField(default=True)
+class PosicionCliente(models.Model):
+    cliente = models.ForeignKey(Cliente)
+    latitud = models.FloatField(db_index=True, max_length=25)
+    longitud = models.FloatField(db_index=True, max_length=25)
+    fecha = models.DateTimeField(auto_created=True)
+    primero = models.BooleanField(default=True)

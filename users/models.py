@@ -1,12 +1,23 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
 from django.db.models import Avg
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+class Permisos(models.Model):
+    pass
+
+class UsuarioBase(models.Model):
+    nombre_usuario = models.CharField(max_length=100)
+    password = models.CharField(max_length=20)
+    creacion = models.DateTimeField(auto_created=True)
+    ultimo_acceso = models.DateTimeField(auto_now_add=True)
+
+class IntentosIngreso(models.Model):
+    ip = models.IPAddressField(blank=False, null=False, db_index=True)
+    fecha = models.DateTimeField(auto_created=True)
+
+class Cliente(UsuarioBase):
     facebook_id = models.CharField(max_length=100, blank=True, null=True)
     facebook_accesstoken = models.CharField(max_length=200, blank=True, null=True)
     facebook_code = models.CharField(max_length=400, blank=True, null=True)
@@ -22,16 +33,15 @@ class UserProfile(models.Model):
                 'twitter' : self.twitter_id is not None}
         return data
 
-class Parking(models.Model):
-    user = models.OneToOneField(User)
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=200)
-    latitude = models.FloatField(db_index=True, max_length=25)
-    longitude = models.FloatField(db_index=True, max_length=25)
-    date = models.DateTimeField(auto_now_add=True)
-    motorbikes = models.BooleanField(default=False)
-    truks = models.BooleanField(default=False)
-    open = models.BooleanField(default=False)
+class Estacionamiento(UsuarioBase):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=200)
+    latitud = models.FloatField(db_index=True, max_length=25)
+    longitud = models.FloatField(db_index=True, max_length=25)
+    fecha_creacion = models.DateTimeField(auto_created=True)
+    motos = models.BooleanField(default=False)
+    camiones = models.BooleanField(default=False)
+    sin_techo = models.BooleanField(default=False)
 
     def to_dict(self, admin=False):
         points = self.points_set.all().aggregate(Avg('points'))['points__avg']
