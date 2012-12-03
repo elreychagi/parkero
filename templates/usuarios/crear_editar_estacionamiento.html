@@ -1,0 +1,77 @@
+{% extends 'usuarios/base.html' %}
+
+{% block content %}
+
+<form action="{{ action }}" method="post">
+    <fieldset>
+        <legend>Crear Estacionamiento</legend>
+        {% csrf_token %}
+        <div class="control-group{% if errors.nombre_usuario %} error{% endif %}" id="control_{{ form.nombre_usuario.name }}">
+            <label class="control-label" for="{{ form.nombre_usuario.name }}">{{ form.nombre_usuario.label }}</label>
+            <div class="controls">
+                {{ form.nombre_usuario }}
+                {% if errors.nombre_usuario %}<span class="help-inline">{{ errors.nombre_usuario.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.correo %} error{% endif %}" id="control_{{ form.correo.name }}">
+            <label class="control-label" for="{{ form.correo.name }}">{{ form.correo.label }}</label>
+            <div class="controls">
+                {{ form.correo }}
+                {% if errors.correo %}<span class="help-inline">{{ errors.correo.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.nombre %} error{% endif %}" id="control_{{ form.nombre.name }}">
+            <label class="control-label" for="{{ form.nombre.name }}">{{ form.nombre.label }}</label>
+            <div class="controls">
+                {{ form.nombre }}
+                {% if errors.nombre %}<span class="help-inline">{{ errors.nombre.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.descripcion %} error{% endif %}" id="control_{{ form.descripcion.name }}">
+            <label class="control-label" for="{{ form.descripcion.name }}">{{ form.descripcion.label }}</label>
+            <div class="controls">
+                {{ form.descripcion }}
+                {% if errors.descripcion %}<span class="help-inline">{{ errors.descripcion.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.latitud %} error{% endif %}" id="control_{{ form.latitud.name }}">
+            <label class="control-label" for="{{ form.latitud.name }}">{{ form.latitud.label }}</label>
+            <div class="controls">
+                {{ form.latitud }}
+                {% if errors.latitud %}<span class="help-inline">{{ errors.latitud.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.longitud %} error{% endif %}" id="control_{{ form.longitud.name }}">
+            <label class="control-label" for="{{ form.longitud.name }}">{{ form.longitud.label }}</label>
+            <div class="controls">
+                {{ form.longitud }}
+                {% if errors.longitud %}<span class="help-inline">{{ errors.longitud.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.motos %} error{% endif %}" id="control_{{ form.motos.name }}">
+            <label class="control-label" for="{{ form.motos.name }}">{{ form.motos.label }}</label>
+            <div class="controls">
+                {{ form.motos }}
+                {% if errors.motos %}<span class="help-inline">{{ errors.motos.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.camiones %} error{% endif %}" id="control_{{ form.camiones.name }}">
+            <label class="control-label" for="{{ form.camiones.name }}">{{ form.camiones.label }}</label>
+            <div class="controls">
+                {{ form.camiones }}
+                {% if errors.camiones %}<span class="help-inline">{{ errors.camiones.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="control-group{% if errors.sin_techo %} error{% endif %}" id="control_{{ form.sin_techo.name }}">
+            <label class="control-label" for="{{ form.sin_techo.name }}">{{ form.sin_techo.label }}</label>
+            <div class="controls">
+                {{ form.sin_techo }}
+                {% if errors.sin_techo %}<span class="help-inline">{{ errors.sin_techo.as_text }}</span>{% endif %}
+            </div>
+        </div>
+        {{ form.id }}
+        <button type="submit" class="btn">Enviar</button>
+    </fieldset>
+</form>
+
+{% endblock %}

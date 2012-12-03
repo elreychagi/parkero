@@ -10,7 +10,7 @@ from dalero.settings import STATIC_ROOT
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'website.views.home', name='home'),
-    url(r'^users/', include('users.urls')),
+    url(r'^users/', include('usuarios.urls')),
     url(r'^app/', include('website.app_urls')),
     url(r'^geo/', include('geo.urls')),
 

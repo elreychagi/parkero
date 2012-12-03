@@ -1,4 +1,4 @@
-{% extends 'admin/base_admin.html' %}
+{% extends 'usuarios/base.html' %}
 
 {% block content %}
 
@@ -14,11 +14,11 @@
         <tbody>
         {% for user in pagination.object_list %}
             <tr>
-                <td>{{ user.username }}</td>
+                <td>{{ user.nombre_usuario }}</td>
                 <td>{% if user.facebook %}X{% endif %}</td>
                 <td>{% if user.twitter %}X{% endif %}</td>
                 <td>
-                    <a href="/users/admin/eliminar_usuario/{{ user.id }}/">{% if user.active %}desactivar{% else %}activar{% endif %}</a>
+                    <a href="/users/admin/eliminar_usuario/{{ user.id }}/">{% if user.activo %}desactivar{% else %}activar{% endif %}</a>
                 </td>
             </tr>
         {% endfor %}

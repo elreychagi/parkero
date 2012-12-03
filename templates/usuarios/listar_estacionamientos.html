@@ -1,4 +1,4 @@
-{% extends 'admin/base_admin.html' %}
+{% extends 'usuarios/base.html' %}
 
 {% block content %}
 
@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th>Nombre</th>
+                <th>Nombre Usuario</th>
                 <th>Correo</th>
                 <th>Descripción</th>
                 <th>Latitud</th>
@@ -19,21 +20,22 @@
             </tr>
         </thead>
         <tbody>
-        {% for park in pagination.object_list %}
+        {% for est in pagination.object_list %}
             <tr>
-                <td>{{ park.name }}</td>
-                <td>{{ park.email }}</td>
-                <td>{{ park.description }}</td>
-                <td>{{ park.latitude }}</td>
-                <td>{{ park.longitude }}</td>
-                <td>{% if park.motorbikes %}X{% endif %}</td>
-                <td>{% if park.truks %}X{% endif %}</td>
-                <td>{% if park.open %}X{% endif %}</td>{{ park.open }}
-                <td><a href="/users/admin/listar_comentarios/{{ park.id }}/">{{ park.comments }}</a></td>
-                <td>{{ park.points }}</td>
+                <td>{{ est.nombre }}</td>
+                <td>{{ est.nombre_usuario }}</td>
+                <td>{{ est.correo }}</td>
+                <td>{{ est.descripcion }}</td>
+                <td>{{ est.latitud }}</td>
+                <td>{{ est.longitud }}</td>
+                <td>{% if est.motos %}X{% endif %}</td>
+                <td>{% if est.camiones %}X{% endif %}</td>
+                <td>{% if est.sin_techo %}X{% endif %}</td>
+                <td><a href="/users/admin/listar_comentarios/{{ est.id }}/">{{ est.comentarios }}</a></td>
+                <td>{{ est.puntos }}</td>
                 <td>
-                    <a href="/users/admin/editar_estacionamiento/{{ park.id }}/">editar</a>
-                    <a href="/users/admin/eliminar_estacionamiento/{{ park.id }}/">{% if park.active %}desactivar{% else %}activar{% endif %}</a>
+                    <a href="/users/admin/editar_estacionamiento/{{ est.id }}/">editar</a>
+                    <a href="/users/admin/eliminar_estacionamiento/{{ est.id }}/">{% if est.activo %}desactivar{% else %}activar{% endif %}</a>
                 </td>
             </tr>
         {% endfor %}

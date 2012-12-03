@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from users.models import Cliente, Estacionamiento
+from usuarios.models import Cliente, Estacionamiento
 
-class Comment(models.Model):
+class Comentarios(models.Model):
     cliente = models.ForeignKey(Cliente)
-    fecha = models.DateTimeField(auto_created=True, db_index=True)
+    fecha = models.DateTimeField(auto_now=False, auto_now_add=True, db_index=True)
     spam = models.BooleanField(default=False, db_index=True)
     contenido = models.TextField(max_length=140)
     estacionamiento = models.ForeignKey(Estacionamiento)
 
     def to_dict(self, admin=False):
-        data = {'date' : self.date.strftime("%d/%m/%Y H:M"),
-                'content' : self.content}
-
+        data = {'fecha' : self.fecha.strftime("%d/%m/%Y H:M"),
+                'spam' : self.spam,
+                'contenido' : self.contenido}
         if admin:
-            data.update({'parking' : self.parking.to_dict(admin=True),
+            data.update({'estacionamiento' : self.estacionamiento.to_dict(admin=True),
                          'id' : self.id,
-                         'userprofile' : self.userprofile.to_dict()})
-        else:
-            data.update({'parking' : self.parking.to_dict()})
+                         'cliente' : self.cliente.to_dict()})
 
         return data
 
@@ -27,7 +25,7 @@ class Comment(models.Model):
 
 class Puntos(models.Model):
     cliente = models.ForeignKey(Cliente)
-    fecha = models.DateTimeField(auto_created=True)
+    fecha = models.DateTimeField(auto_now=False, auto_now_add=True)
     puntos = models.IntegerField(default=0)
     estacionamiento = models.ForeignKey(Estacionamiento)
 

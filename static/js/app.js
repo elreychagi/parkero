@@ -28,16 +28,19 @@ $(document).ready(function(){
         });
 
         $.get(
-            '/geo/list_parkings/',
+            '/geo/buscar_estacionmientos/',
             {'lat' : $lat,
             'long' : $long},
             function(data){
                 $.each(data.parkings, function(i, v){
                     var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(v.latitude, v.longitude),
+                        position: new google.maps.LatLng(v.latitud, v.longitud),
                         map: map,
                         icon: new google.maps.MarkerImage("/static/img/taxi.png"),
                         title:v.name
+                    });
+                    google.maps.event.addListener(marker, "click", function() {
+                        alert(v.id);
                     });
                 });
             }

@@ -6,25 +6,34 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.http import HttpResponse
 from django.utils.decorators import available_attrs
 from dalero import settings
+from usuarios.models import UsuarioBase, Estacionamiento
 
-def social_user(user):
-    return user.is_authenticated() and (hasattr(user, 'userprofile') or user.is_superuser)
+def usuario_autenticado(request):
+    if 'SESSION_KEY' in request.session and request.session['SESSION_KEY']:
+        try:
+            user = UsuarioBase.objects.get(pk=request.session['SESSION_KEY'])
+            request.user = user
+            return True
+        except:
+            pass
 
-def admin_user(user):
-    return user.is_authenticated() and user.is_superuser
+    return False
 
-def parking_user(user):
-    return user.is_authenticated() and (hasattr(user, 'parking') or user.is_superuser)
+def es_cliente(request):
+    return usuario_autenticado(request) and (request.user.cliente or request.user.administrador)
 
-def no_user(user):
-    return not user.is_authenticated()
+def es_administrador(request):
+    return usuario_autenticado(request) and request.user.administrador
+
+def es_estacionamiento(request):
+    return usuario_autenticado(request) and (Estacionamiento.objects.all().filter(usuariobase_ptr_id=request.user.id).exists() or request.user.administrador)
 
 def user_passes_test(test_func, login_url=None, login_json=False, redirect_field_name=REDIRECT_FIELD_NAME):
 
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
         def _wrapped_view(request, *args, **kwargs):
-            if test_func(request.user):
+            if test_func(request):
                 return view_func(request, *args, **kwargs)
             path = request.build_absolute_uri()
 

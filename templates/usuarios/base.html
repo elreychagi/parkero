@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Dalero | Admin</title>
+    <title>Sistema De Identificación De Puntos De Estacionamientos Mediante El Uso De Geo-Localización En La Parroquia La Candelaria Del Distrito Capital | Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
@@ -27,6 +27,7 @@
         <div class="container">
             <a class="brand" href="#">Administrador Estacionamientos</a>
             <ul class="nav">
+                {% if not es_estacionamiento %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         Estacionamientos
@@ -37,8 +38,11 @@
                         <a href="/users/admin/listar_estacionamientos/">Lista</a>
                     </ul>
                 </li>
-                <li><a href="/">Inicio</a></li>
                 <li><a href="/users/admin/listar_usuarios/">Usuarios</a></li>
+                {% else %}
+                <li><a href="/users/park/listar_comentarios/{{ estacionamiento.id }}/">Listar Comentarios</a></li>
+                {% endif %}
+                <li><a href="/">Inicio</a></li>
                 <li><a href="/users/logout/">Salir</a></li>
             </ul>
         </div>
@@ -48,7 +52,7 @@
 <div class="container">
     {% block content %}{% endblock %}
     <footer>
-        <p>&copy; Dalero 2012</p>
+        <p></p>
     </footer>
 
 </div>

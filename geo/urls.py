@@ -2,5 +2,5 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
-    url(r'^list_parkings/$','geo.views.list_points'),
+    url(r'^buscar_estacionmientos/$','geo.views.buscar_estacionmientos'),
 )
