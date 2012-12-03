@@ -103,7 +103,7 @@ def facebook_callback(request):
                         cliente = Cliente.objects.get(facebook_id=fb_user['id'])
                         cliente.login(request)
                     except Cliente.DoesNotExist:
-                        cliente = Cliente(nombre_usuario="%s_fb"%fb_user['username'],
+                        cliente = Cliente(nombre_usuario="%s_fb"%(fb_user['username'] if 'username' in fb_user else fb_user['id']),
                             facebook_id=fb_user['id'],
                             facebook_accesstoken=access_token,
                             facebook_code=code)
