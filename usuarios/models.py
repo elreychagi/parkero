@@ -4,9 +4,6 @@ from django.db import models
 # Create your models here.
 from django.db.models import Avg
 
-class Permisos(models.Model):
-    pass
-
 class UsuarioBase(models.Model):
     nombre_usuario = models.CharField(max_length=100)
     password = models.CharField(max_length=128, null=True, blank=True)
