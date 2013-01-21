@@ -1,3 +1,67 @@
+var list_parkings = [];
+
+function get_comments(){
+
+}
+
+function get_parkings(recarga){
+    navigator.geolocation.getCurrentPosition(function (position) {
+            var $lat = position.coords.latitude;
+            var $long = position.coords.longitude;
+
+            if(typeof recarga != 'undefined' && localStorage.getItem('position') != null && localStorage.getItem('position') == $lat + $long){
+                setTimeout('get_parkings(true)', 30000);
+            }else{
+                localStorage.setItem('position', $lat + $long);
+
+                var point = new google.maps.LatLng($lat, $long);
+                var mapOptions = {
+                    center: point,
+                    zoom: 16,
+                    styles:[
+                        { featureType: "road", stylers: [{hue: "#006Eee"}]}
+                    ],
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: point,
+                    map: map,
+                    title: 'Hello World!'
+                });
+
+                var data = {'lat' : $lat, 'long' : $long}
+                if(typeof recarga != 'undefined'){data['recarga'] = true;}
+
+                $.get(
+                    '/geo/buscar_estacionmientos/',
+                    data,
+                    function(data){
+                        $.each(data.parkings, function(i, v){
+                            if(list_parkings.indexOf(v.latitud + v.longitud) == -1){
+                                var marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(v.latitud, v.longitud),
+                                    map: map,
+                                    icon: new google.maps.MarkerImage("/static/img/taxi.png"),
+                                    title:v.name
+                                });
+                                google.maps.event.addListener(marker, "click", function() {
+                                    alert(v.id);
+                                });
+                            }
+                        });
+                        google.maps.event.addListener(map, 'center_changed', function() {
+                            get_parkings(true);
+                        });
+                        setTimeout('get_parkings(true)', 30000);
+                    }
+                );
+            }
+        },
+        function(){alert('Error al obtener posición');},
+        { enableHighAccuracy:true }
+    );
+}
 $(document).ready(function(){
     var $lat = false;
     var $long = false;
@@ -8,62 +72,5 @@ $(document).ready(function(){
         $('#map_canvasd').css({'width':'600px'});
     }
 
-    navigator.geolocation.getCurrentPosition(function (position) {
-        $lat = position.coords.latitude;
-        $long = position.coords.longitude;
-        var point = new google.maps.LatLng($lat, $long);
-        var mapOptions = {
-            center: point,
-            zoom: 16,
-            styles:[
-                { featureType: "road", stylers: [{hue: "#006Eee"}]}
-            ],
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-        var marker = new google.maps.Marker({
-            position: point,
-            map: map,
-            title: 'Hello World!'
-        });
-
-        $.get(
-            '/geo/buscar_estacionmientos/',
-            {'lat' : $lat,
-            'long' : $long},
-            function(data){
-                $.each(data.parkings, function(i, v){
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(v.latitud, v.longitud),
-                        map: map,
-                        icon: new google.maps.MarkerImage("/static/img/taxi.png"),
-                        title:v.name
-                    });
-                    google.maps.event.addListener(marker, "click", function() {
-                        alert(v.id);
-                    });
-                });
-            }
-        );
-    },
-        function(){alert('error');},
-        { enableHighAccuracy:true }
-    );
+    get_parkings();
 });
-
-
-function initialize() {
-    var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-    var mapOptions = {
-        zoom: 4,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-    var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title: 'Hello World!'
-    });
-}

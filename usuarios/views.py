@@ -22,15 +22,15 @@ def twitter_connect(request):
     Libreria tweepy
     """
 
-    if 0==0:
+    try:
         auth = tweepy.OAuthHandler(TWITTER['KEY'], TWITTER['SECRET'], TWITTER["CALLBACK"])
         redirect_url = auth.get_authorization_url()
         rkey = auth.request_token.key
         rsecret = auth.request_token.secret
         request.session['tw_rt'] = "%s::%s"%(rkey, rsecret)
         return HttpResponseRedirect(redirect_url)
-
-    return HttpResponseRedirect('/?error_twitter')
+    except:
+        return HttpResponseRedirect('/?error_twitter')
 
 def twitter_callback(request):
     """
@@ -38,7 +38,7 @@ def twitter_callback(request):
     En caso afirmativo busca a un usuario con ese id de Twitter para crear la sesion, de no existir crea al usuario
     """
     retorno = HttpResponseRedirect('/')
-    if 0==0:
+    try:
         s = request.session['tw_rt']
         tokens = s.split('::')
         request_token = tokens[0]
@@ -64,8 +64,8 @@ def twitter_callback(request):
                 cliente.save()
                 cliente.login(request)
             retorno = HttpResponseRedirect('/app/')
-    '''except:
-        retorno = HttpResponseRedirect('/?error_twitter')'''
+    except:
+        retorno = HttpResponseRedirect('/?error_twitter')
     del request.session['tw_rt']
     return retorno
 
@@ -86,7 +86,7 @@ def facebook_callback(request):
     """
     code = None if 'code' not in request.GET else request.GET['code']
     retorno = HttpResponseRedirect('/?error_facebook')
-    if 0==0:
+    try:
         if code is not None:
             args = dict(client_id=FACEBOOK["KEY"],
                         redirect_uri=FACEBOOK["CALLBACK"],
@@ -111,8 +111,8 @@ def facebook_callback(request):
                         cliente.login(request)
                         request.session['tipo'] = 'cliente'
                     retorno = HttpResponseRedirect('/app/')
-    """except:
-        pass"""
+    except:
+        pass
     return retorno
 
 @user_passes_test(es_administrador, login_url='/users/login/')
@@ -135,7 +135,7 @@ def crear_estacionamiento(request):
             elif UsuarioBase.objects.all().filter(correo=clean_data['correo']).exists():
                 errors = {'correo' : {'as_text':'* Correo electrónico usado'}}
             else:
-                password = new_password(user=clean_data['nombre_usuario'])
+                password = __new_password(user=clean_data['nombre_usuario'])
                 estacionamiento = Estacionamiento(
                     nombre_usuario=clean_data['nombre_usuario'],
                     password=password,
@@ -149,12 +149,6 @@ def crear_estacionamiento(request):
                     sin_techo=clean_data['sin_techo'])
                 estacionamiento.save()
 
-                """msg = MIMEText(u"Bienvenido a Dalero.net su contrase&nacute;a de ingreso es %s"%password,'html')
-                msg["From"] = "enydrueda@gmail.com"
-                msg["To"] = estacionamiento.correo
-                msg["Subject"] = "Bienvenido a Dalero.net"
-                p = Popen(["/usr/sbin/sendmail", "-t"], stdin=PIPE)
-                p.communicate(msg.as_string())"""
                 return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
         else:
             errors = form.errors
@@ -197,7 +191,7 @@ def editar_estacionamiento(request, id=None):
     """
     errors = {}
     es_estac = Estacionamiento.objects.all().filter(usuariobase_ptr_id=request.user.id).exists()
-    if 0==0:
+    try:
         if es_estac:
             estacionamiento = request.user.estacionamiento
         else:
@@ -238,8 +232,8 @@ def editar_estacionamiento(request, id=None):
         return render_to_response('usuarios/crear_editar_estacionamiento.html',
             {'form' : form, 'errors' : errors, 'es_estacionamiento' : es_estac, 'estacionamiento' : estacionamiento},
             context_instance=RequestContext(request))
-    '''except Estacionamiento.DoesNotExist:
-        raise Http404()'''
+    except Estacionamiento.DoesNotExist:
+        raise Http404()
 
 @user_passes_test(es_administrador, login_url='/users/login/')
 def eliminar_estacionamiento(request, id):
@@ -358,15 +352,15 @@ def denunciar_comentario(request, id):
     """
     Vista para que el estacionamiento marque como spam a uncomentario
     """
-    if 0==0:
+    try:
         comment = Comentarios.objects.get(pk=id, estacionamiento=request.user.estacionamiento)
         comment.spam = not comment.spam
         comment.save()
-    '''except Comentarios.DoesNotExist:
-        raise Http404()'''
+    except Comentarios.DoesNotExist:
+        raise Http404()
     return HttpResponseRedirect('/users/admin/listar_comentarios/%s/'%comment.estacionamiento_id)
 
-def new_password(user):
+def __new_password(user):
     """
         Generador de passwords
     """
@@ -377,11 +371,11 @@ def login(request):
     """
     Vista para loguear usuarios (estacionamientos y admin)
     """
-    (admin, nuevo) = UsuarioBase.objects.get_or_create(nombre_usuario='admin')
-    if True:
+    '''(admin, nuevo) = UsuarioBase.objects.get_or_create(nombre_usuario='admin')
+    if nuevo:
         admin.password = hashlib.sha512('adminclave').hexdigest()
         admin.administrador = True
-        admin.save()
+        admin.save()'''
 
     errors = None
     if request.method == 'POST':

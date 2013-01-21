@@ -16,6 +16,7 @@ def buscar_estacionmientos(request):
     posicion_cliente = PosicionCliente(cliente=request.user.cliente,
                         latitud=lat,
                         longitud=long)
+    posicion_cliente.primero = True if 'recarga' not in request.GET else False
     posicion_cliente.save()
     cursor = connection.cursor()
 
