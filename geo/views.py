@@ -10,7 +10,7 @@ from usuarios.permisos import *
 def buscar_estacionmientos(request):
     lat = float(request.GET['lat'])
     long = float(request.GET['long'])
-    radio = 1
+    radio = 10
     unidad_distancia = 6371
 
     posicion_cliente = PosicionCliente(cliente=request.user.cliente,

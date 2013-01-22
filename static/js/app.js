@@ -62,9 +62,12 @@ function get_parkings(recarga){
         { enableHighAccuracy:true }
     );
 }
+
 $(document).ready(function(){
     var $lat = false;
     var $long = false;
+
+    $('#map_canvas').height($('#map_canvas').height() - 60);
 
     var useragent = navigator.userAgent;
 
@@ -73,4 +76,5 @@ $(document).ready(function(){
     }
 
     get_parkings();
+    window.onorientationchange = function(){alert('dkj')}
 });
