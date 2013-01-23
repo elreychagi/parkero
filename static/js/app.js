@@ -1,7 +1,72 @@
 var list_parkings = [];
 
-function get_comments(){
+function show_parking(id){
+    var estacionamiento = localStorage.getItem(id);
+    if(estacionamiento != null){
+        var json_est = JSON.parse(estacionamiento);
+        var datos_meta = function(){
+            var meta = '';
+            if(json_est.motos){
+                meta += '<li>Motos</li>';
+            }
+            if(json_est.camiones){
+                meta += '<li>Camiones</li>';
+            }
+            if(!json_est.sin_techo){
+                meta += '<li>Techado</li>';
+            }else{
+                meta += '<li>Sin techo</li>';
+            }
+            return meta;
+        }
 
+        var set_points = function(){
+            var puntos = '<span class="wrapper-points">';
+            for(var i=1; i < 6; i++){
+                if(json_est.puntos < i){
+                    puntos += '<i class="icon-star-empty point" data-point="' + i + '"></i>';
+                }else{
+                    puntos += '<i class="icon-star point" data-point="' + i + '"></i>';
+                }
+            }
+            puntos += '</span><br>';
+
+            return puntos;
+        }
+        var datos_html = '<div class="modal-header">' +
+                             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
+                             '<h3 id="myModalLabel">' + json_est.nombre + '</h3>' +
+                         '</div>' +
+                         '<div class="modal-body">' +
+                             '<span><strong>Puntaje</strong></span>  ' +
+                             set_points() +
+                             '<strong>Descripcion:</strong>' +
+                             '<p>' + json_est.descripcion + '</p>' +
+                             '<ul>' +
+                                 datos_meta() +
+                             '</ul>' +
+                         '</div>' +
+                         '<div class="modal-footer">' +
+                             '<form class="navbar-form pull-left" style="width: 100%;">' +
+                                 '<strong>¿Tienes algún comentario?</strong><br>' +
+                                 '<textarea class="area_comment" style="width: 98%;"></textarea>' +
+                                 '<small>140 caractéres máximo<small><br>' +
+                                 '<button type="submit" class="btn">Submit</button>' +
+                             '</form>' +
+                         '</div>';
+        $('#wrapper_detalles').html(datos_html);
+        $('#wrapper_detalles').modal('show');
+
+        $('.area_comment').keyup(function(){
+            if($('.area_comment').val().length > 140) {
+                $('.area_comment').val($('.area_comment').val().substring(0, 140))
+            }
+        });
+
+        $('.point').click(function(){
+            alert('kj');
+        });
+    }
 }
 
 function get_parkings(recarga){
@@ -45,8 +110,11 @@ function get_parkings(recarga){
                                     icon: new google.maps.MarkerImage("/static/img/taxi.png"),
                                     title:v.name
                                 });
+                                localStorage.setItem(v.id, JSON.stringify(v));
+                                console.log(v.id, v);
+
                                 google.maps.event.addListener(marker, "click", function() {
-                                    alert(v.id);
+                                    show_parking(v.id);
                                 });
                             }
                         });

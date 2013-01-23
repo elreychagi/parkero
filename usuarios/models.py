@@ -54,7 +54,7 @@ class Estacionamiento(UsuarioBase):
             'descripcion' : self.descripcion,
             'latitud' : str(self.latitud),
             'longitud' : str(self.longitud),
-            'puntos' : '%s de 10'%(int(round(puntos, 2)) if puntos is not None else 0.0),
+            'puntos' : int(round(puntos, 2)) if puntos is not None else 0,
             'motos' : self.motos,
             'camiones' : self.camiones,
             'sin_techo' : self.sin_techo,
