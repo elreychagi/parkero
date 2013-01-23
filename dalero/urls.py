@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^users/', include('usuarios.urls')),
     url(r'^app/', include('website.app_urls')),
     url(r'^geo/', include('geo.urls')),
+    url(r'^comentarios/', include('comentarios.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

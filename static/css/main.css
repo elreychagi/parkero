@@ -31,13 +31,30 @@ html, #body_app {
     background: aqua;
 }
 
+.wrapper-comments small{
+    font-size: 100%;
+    text-align: left;
+}
 
+.wrapper-comments small small{
+    font-size: 100%;
+}
 
+.wrapper-comment-form{
+    height: 130px;
+}
 
-
-
-
-
-
-
-
+.commets-box{
+    background: #eee;
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 5px;
+}
+.comments-box p{
+    padding: 5px;
+    margin: 0px;
+}
+.control-comment{
+    font-size: 90%;
+    cursor: pointer;
+}

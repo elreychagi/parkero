@@ -20,18 +20,17 @@ function show_parking(id){
             return meta;
         }
 
-        var set_points = function(){
-            var puntos = '<span class="wrapper-points">';
+        var set_points = function(data_puntos){
+            $('.wrapper-points').html('');
+            var puntos = '';
             for(var i=1; i < 6; i++){
-                if(json_est.puntos < i){
+                if(data_puntos < i){
                     puntos += '<i class="icon-star-empty point" data-point="' + i + '"></i>';
                 }else{
                     puntos += '<i class="icon-star point" data-point="' + i + '"></i>';
                 }
             }
-            puntos += '</span><br>';
-
-            return puntos;
+            $('.wrapper-points').html(puntos);
         }
         var datos_html = '<div class="modal-header">' +
                              '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
@@ -39,7 +38,7 @@ function show_parking(id){
                          '</div>' +
                          '<div class="modal-body">' +
                              '<span><strong>Puntaje</strong></span>  ' +
-                             set_points() +
+                             '<span class="wrapper-points"></span><br>' +
                              '<strong>Descripcion:</strong>' +
                              '<p>' + json_est.descripcion + '</p>' +
                              '<ul>' +
@@ -47,14 +46,31 @@ function show_parking(id){
                              '</ul>' +
                          '</div>' +
                          '<div class="modal-footer">' +
-                             '<form class="navbar-form pull-left" style="width: 100%;">' +
-                                 '<strong>¿Tienes algún comentario?</strong><br>' +
-                                 '<textarea class="area_comment" style="width: 98%;"></textarea>' +
-                                 '<small>140 caractéres máximo<small><br>' +
-                                 '<button type="submit" class="btn">Submit</button>' +
-                             '</form>' +
+                             '<div class="wrapper-comment-form">' +
+                                 '<form class="navbar-form pull-left" style="width: 100%;">' +
+                                     '<strong>¿Tienes algún comentario?</strong><br>' +
+                                     '<textarea class="area_comment" style="width: 98%;"></textarea>' +
+                                     '<small>140 caractéres máximo<small><br>' +
+                                     '<button type="submit" class="btn_send_comment">Enviar</button>' +
+                                 '</form>' +
+                             '</div>' +
+                             '<div class="wrapper-comments">' +
+                                 '<div class="commets-box">' +
+                                     '<p>laksjdfl akdjfdsak lfjds</p>' +
+                                     '<a class="control-comment">cerrar</a>' +
+                                 '</div>' +
+            '<div class="commets-box">' +
+            '<p>laksjdfl akdjfdsak lfjds</p>' +
+            '<a class="control-comment">cerrar</a>' +
+            '</div>' +
+            '<div class="commets-box">' +
+            '<p>laksjdfl akdjfdsak lfjds</p>' +
+            '<a class="control-comment">cerrar</a>' +
+            '</div>' +
+                             '</div>' +
                          '</div>';
         $('#wrapper_detalles').html(datos_html);
+        set_points(json_est.puntos);
         $('#wrapper_detalles').modal('show');
 
         $('.area_comment').keyup(function(){
@@ -64,8 +80,28 @@ function show_parking(id){
         });
 
         $('.point').click(function(){
-            alert('kj');
+            $this = $(this);
+            $.post('/app/set_points/' + json_est.id + '/' + $this.data('point') + '/',
+                {'csrfmiddlewaretoken' : csr},
+                function(data){
+                    if(data.success){
+                        set_points(data.puntos);
+                    }
+                });
         });
+
+        $('.navbar-form').click(function(e){
+            $this = $(this);
+            if($this.find('textarea').val() == '')return false;
+            e.preventDefault();
+            $.post('/comentarios/set_comment/' + json_est.id + '/',
+                {'csrfmiddlewaretoken' : csr, 'contenido' : $this.find('textarea').val()},
+                function(data){
+                    if(data.success){
+                        alert(data.comentario);
+                    }
+                });
+        })
     }
 }
 
@@ -91,8 +127,7 @@ function get_parkings(recarga){
                 var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
                 var marker = new google.maps.Marker({
                     position: point,
-                    map: map,
-                    title: 'Hello World!'
+                    map: map
                 });
 
                 var data = {'lat' : $lat, 'long' : $long}
@@ -144,5 +179,5 @@ $(document).ready(function(){
     }
 
     get_parkings();
-    window.onorientationchange = function(){alert('dkj')}
+    window.onorientationchange = function(){}
 });
