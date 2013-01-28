@@ -169,7 +169,8 @@ function get_parkings(recarga){
 $(document).ready(function(){
     var $lat = false;
     var $long = false;
-
+    localStorage.setItem('a', 'b');
+    alert(localStorage.getItem('a'));
     $('#map_canvas').height($('#map_canvas').height() - 60);
 
     var useragent = navigator.userAgent;

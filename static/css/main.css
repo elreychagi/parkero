@@ -10,7 +10,7 @@ html, #body_app {
     padding-bottom: 0;
     padding-top: 0;
 }
-#map_canvas, .container {
+#map_canvas, #body_app .container {
     width: 100%;
     padding: 0;
 }
@@ -58,3 +58,6 @@ html, #body_app {
     font-size: 90%;
     cursor: pointer;
 }
+
+#body_app .modal{position: absolute;}
+#body_app .modal-body{max-height: 200px;}
