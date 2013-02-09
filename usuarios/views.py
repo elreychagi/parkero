@@ -152,7 +152,7 @@ def crear_estacionamiento(request):
                 return HttpResponseRedirect('/users/admin/listar_estacionamientos/')
         else:
             errors = form.errors
-    return render_to_response('usuarios/crear_editar_estacionamiento.html', {'form' : form, 'errors' : errors}, context_instance=RequestContext(request))
+    return render_to_response('usuarios/crear_editar_estacionamiento.html', {'form' : form, 'errors' : errors, 'crear' : True}, context_instance=RequestContext(request))
 
 @user_passes_test(es_administrador, login_url='/users/login/')
 def listar_estacionamientos(request, page=1):

@@ -4,7 +4,7 @@
 
 <form action="{{ action }}" method="post">
     <fieldset>
-        <legend>Crear Estacionamiento</legend>
+        <legend>{% if crear %}Crear {% else %}Editar {% endif %}Estacionamiento</legend>
         {% csrf_token %}
         <div class="control-group{% if errors.nombre_usuario %} error{% endif %}" id="control_{{ form.nombre_usuario.name }}">
             <label class="control-label" for="{{ form.nombre_usuario.name }}">{{ form.nombre_usuario.label }}</label>
@@ -34,6 +34,7 @@
                 {% if errors.descripcion %}<span class="help-inline">{{ errors.descripcion.as_text }}</span>{% endif %}
             </div>
         </div>
+        {% if crear %}
         <div class="control-group{% if errors.latitud %} error{% endif %}" id="control_{{ form.latitud.name }}">
             <label class="control-label" for="{{ form.latitud.name }}">{{ form.latitud.label }}</label>
             <div class="controls">
@@ -48,6 +49,7 @@
                 {% if errors.longitud %}<span class="help-inline">{{ errors.longitud.as_text }}</span>{% endif %}
             </div>
         </div>
+        {% endif %}
         <div class="control-group{% if errors.motos %} error{% endif %}" id="control_{{ form.motos.name }}">
             <label class="control-label" for="{{ form.motos.name }}">{{ form.motos.label }}</label>
             <div class="controls">
@@ -73,5 +75,22 @@
         <button type="submit" class="btn">Enviar</button>
     </fieldset>
 </form>
-
+{% endblock %}
+{% block js %}
+    {% if crear %}
+    <script>
+        $(document).ready(function(){
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var $lat = position.coords.latitude;
+                var $long = position.coords.longitude;
+                $('#id_latitud').val($lat).toFixed(5);
+                $('#id_longitud').val($long).toFixed(5);
+                alert('sadf')
+            },
+            function(){alert('Error al obtener posición');},
+            { enableHighAccuracy:true }
+            );
+        });
+    </script>
+    {% endif %}
 {% endblock %}

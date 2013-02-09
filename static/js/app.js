@@ -4,8 +4,28 @@ var map;
 
 function show_parking(id){
     var estacionamiento = localStorage.getItem(id);
+
     if(estacionamiento != null){
         var json_est = JSON.parse(estacionamiento);
+
+        var get_comments = function(){
+            $.get('/comentarios/get_comments/' + json_est.id,
+                {},
+                function(data){
+                    var retorno = '';
+                    if(data.success && data.comentarios.length > 0){
+                        retorno += '<strong>Comentarios</strong>';
+                        $.each(data.comentarios, function(i, v){
+                            alert('kj')
+                            retorno += '<div class="commets-box">' +
+                                       '<p>' + v.contenido + '</p>' +
+                                       '</div>';
+                        });
+                    }
+                    $('#wrapper_comment').html(retorno);
+                }
+            );
+        }
         var datos_meta = function(){
             var meta = '';
             if(json_est.motos){
@@ -48,6 +68,7 @@ function show_parking(id){
             '</ul>' +
             '</div>' +
             '<div class="modal-footer">' +
+            '<div id="wrapper_comment"></div>' +
             '<div class="wrapper-comment-form">' +
             '<form class="navbar-form pull-left" style="width: 100%;">' +
             '<strong>¿Tienes algún comentario?</strong><br>' +
@@ -56,23 +77,13 @@ function show_parking(id){
             '<button type="submit" class="btn_send_comment">Enviar</button>' +
             '</form>' +
             '</div>' +
-            '<div class="wrapper-comments">' +
-            '<div class="commets-box">' +
-            '<p>laksjdfl akdjfdsak lfjds</p>' +
-            '<a class="control-comment">cerrar</a>' +
-            '</div>' +
-            '<div class="commets-box">' +
-            '<p>laksjdfl akdjfdsak lfjds</p>' +
-            '<a class="control-comment">cerrar</a>' +
-            '</div>' +
-            '<div class="commets-box">' +
-            '<p>laksjdfl akdjfdsak lfjds</p>' +
-            '<a class="control-comment">cerrar</a>' +
-            '</div>' +
-            '</div>' +
+            '<div class="wrapper-comments"></div>' +
             '</div>';
+
         $('#wrapper_detalles').html(datos_html);
+        get_comments();
         set_points(json_est.puntos);
+
         $('#wrapper_detalles').modal('show');
 
         $('.area_comment').keyup(function(){
@@ -104,21 +115,19 @@ function show_parking(id){
                    }
                 }
             );
-        })
+        });
     }
 }
 
 function get_parkings(recarga){
     window.clearTimeout(timout);
     navigator.geolocation.getCurrentPosition(function (position) {
-        var $lat = position.coords.latitude;
-        var $long = position.coords.longitude;
+        var $lat = position.coords.latitude.toFixed(5);
+        var $long = position.coords.longitude.toFixed(5);
 
-        if(localStorage.getItem('position') == $lat + '/' + $long){
+        if(typeof recarga != "undefined" && localStorage.getItem('position') == $lat + '/' + $long){
             timout = setTimeout('get_parkings(true)', 30000);
-            alert("local")
         }else{
-            alert(localStorage.getItem('position') + ' ' + $lat + '/' + $long);
             localStorage.setItem('position', $lat + '/' + $long);
             var point = new google.maps.LatLng($lat, $long);
             var mapOptions = {
