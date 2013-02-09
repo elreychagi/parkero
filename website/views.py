@@ -6,6 +6,9 @@ from django.template import RequestContext
 from usuarios.permisos import usuario_autenticado
 
 def home(request):
+    """
+    Home de la aplicacion
+    """
     data = {}
     if usuario_autenticado(request):
         data['usuario'] = request.user

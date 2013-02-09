@@ -9,6 +9,9 @@ from django.core.context_processors import csrf
 
 @user_passes_test(es_cliente, login_url='/')
 def home(request):
+    """
+    Vista del home de le aplicación en la que se muestra el mapa
+    """
     data = {}
     data.update(csrf(request))
     retorno = render_to_response("app/index.html", data, context_instance=RequestContext(request))
@@ -16,6 +19,9 @@ def home(request):
 
 @user_passes_test(es_cliente, login_url='/')
 def set_points(request, id, puntos):
+    """
+    Servicio para puntear los estacionamientos
+    """
     puntos = int(puntos)
     if puntos > 5 or puntos < 1:
         return HttpResponse(json.dumps({'success' : False, 'cause' : 'puntaje de 1-5'}), mimetype='application/json')
