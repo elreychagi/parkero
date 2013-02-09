@@ -49,6 +49,7 @@ html, #body_app {
     border: 1px solid #ddd;
     text-align: left;
     padding: 5px;
+    min-height: 30px;
 }
 .comments-box p{
     padding: 5px;

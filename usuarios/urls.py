@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^admin/eliminar_estacionamiento/(?P<id>\d+)/$','usuarios.views.eliminar_estacionamiento'),
 
     url(r'^admin/listar_comentarios/(?P<park>\d+)/(?P<page>\d+)?','usuarios.views.listar_comentarios'),
-    url(r'^admin/eliminar_comentario/(?P<id>\d+)/$','usuarios.views.eliminar_comentario'),
+    url(r'^admin/eliminar_comentario/(?P<id>\d+)/(?P<id_comentario>\d+)/$','usuarios.views.eliminar_comentario'),
 
     url(r'^admin/listar_usuarios/(?P<page>\d+)?','usuarios.views.listar_usuarios'),
     url(r'^admin/eliminar_usuario/(?P<id>\d+)/$','usuarios.views.eliminar_usuario'),

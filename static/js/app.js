@@ -16,7 +16,7 @@ function show_parking(id){
                     if(data.success && data.comentarios.length > 0){
                         retorno += '<strong>Comentarios</strong>';
                         $.each(data.comentarios, function(i, v){
-                            alert('kj')
+
                             retorno += '<div class="commets-box">' +
                                        '<p>' + v.contenido + '</p>' +
                                        '</div>';
@@ -103,15 +103,25 @@ function show_parking(id){
                 });
         });
 
-        $('.navbar-form').click(function(e){
+        $('.navbar-form').submit(function(e){
+            e.preventDefault();
             $this = $(this);
             if($this.find('textarea').val() == '')return false;
-            e.preventDefault();
             $.post('/comentarios/set_comment/' + json_est.id + '/',
                 {'csrfmiddlewaretoken' : csr, 'contenido' : $this.find('textarea').val()},
                 function(data){
                     if(data.success){
-                        alert(data.comentario);
+                        var retorno = '';
+                        if($('#wrapper_comment strong').length > 0){
+                            retorno += '<strong>Comentarios</strong>';
+                        }
+
+                        $('#wrapper_comment').prepend(
+                            '<div class="commets-box">' +
+                            '<p>' + data.comentario.contenido + '</p>' +
+                            '</div>'
+                        );
+                        $this.find('textarea').val('');
                    }
                 }
             );

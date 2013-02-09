@@ -25,9 +25,10 @@ def set_comentario(request, id):
 
 @user_passes_test(es_cliente, login_url='/')
 def get_comentarios(request, id):
-    try:
-        offset = 0 if 'offset' not in request.GET else request.GET['offset']
-        comentarios = [x.to_dict() for x in Comentarios.objects.all().filter(estacionamiento=id)]
+    if 0==0:
+        offset = 0 if 'offset' not in request.GET else int(request.GET['offset'])
+        limit = 5
+        comentarios = [x.to_dict(admin=False, cliente=request.user.cliente) for x in Comentarios.objects.all().filter(estacionamiento=id)[offset:limit + offset]]
         return HttpResponse(json.dumps({'success' : True, 'comentarios' : comentarios}), mimetype='application/json')
-    except:
-        return HttpResponse(json.dumps({'success' : True}), mimetype='application/json')
+    '''except:
+        return HttpResponse(json.dumps({'success' : False}), mimetype='application/json')'''

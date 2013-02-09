@@ -293,12 +293,12 @@ def listar_comentarios(request, park, page=1):
         raise Http404()
 
 @user_passes_test(es_administrador, login_url='/users/login/')
-def eliminar_comentario(request, id):
+def eliminar_comentario(request, id, id_comentario):
     """
     Vista para elimiar comentarios
     """
     try:
-        comment = Comentarios.objects.get(pk=id)
+        comment = Comentarios.objects.get(pk=id_comentario)
         comment.delete()
     except Comentarios.DoesNotExist:
         raise Http404()
